@@ -138,60 +138,63 @@ const ColorsManager = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="font-serif text-xl font-semibold">Cores de Esmalte</h2>
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex items-center justify-between gap-2">
+        <h2 className="font-serif text-lg sm:text-xl font-semibold">Cores de Esmalte</h2>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button onClick={() => handleOpenDialog()}>
-              <Plus className="mr-2 h-4 w-4" />
-              Nova Cor
+            <Button onClick={() => handleOpenDialog()} size="sm" className="sm:size-default">
+              <Plus className="mr-1.5 sm:mr-2 h-4 w-4" />
+              <span className="hidden sm:inline">Nova Cor</span>
+              <span className="sm:hidden">Nova</span>
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+          <DialogContent className="max-w-[95vw] sm:max-w-lg max-h-[85vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>
+              <DialogTitle className="text-lg sm:text-xl">
                 {editingColor ? 'Editar Cor' : 'Nova Cor'}
               </DialogTitle>
             </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Nome</Label>
+            <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="name" className="text-sm">Nome</Label>
                 <Input
                   id="name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="Ex: Vermelho Clássico"
                   required
+                  className="h-9 sm:h-10"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="hex_color">Cor (Hex)</Label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                <div className="space-y-1.5 sm:space-y-2">
+                  <Label htmlFor="hex_color" className="text-sm">Cor (Hex)</Label>
                   <div className="flex gap-2">
                     <Input
                       type="color"
                       value={formData.hex_color}
                       onChange={(e) => setFormData({ ...formData, hex_color: e.target.value })}
-                      className="w-14 h-10 p-1 cursor-pointer"
+                      className="w-12 sm:w-14 h-9 sm:h-10 p-1 cursor-pointer"
                     />
                     <Input
                       id="hex_color"
                       value={formData.hex_color}
                       onChange={(e) => setFormData({ ...formData, hex_color: e.target.value })}
                       placeholder="#FFFFFF"
+                      className="h-9 sm:h-10"
                     />
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="category">Categoria</Label>
+                <div className="space-y-1.5 sm:space-y-2">
+                  <Label htmlFor="category" className="text-sm">Categoria</Label>
                   <Select
                     value={formData.category_id}
                     onValueChange={(value) => setFormData({ ...formData, category_id: value })}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="h-9 sm:h-10">
                       <SelectValue placeholder="Selecione..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -205,14 +208,14 @@ const ColorsManager = () => {
                 </div>
               </div>
 
-              <div className="flex gap-6">
+              <div className="flex gap-4 sm:gap-6">
                 <div className="flex items-center gap-2">
                   <Switch
                     id="is_glitter"
                     checked={formData.is_glitter}
                     onCheckedChange={(checked) => setFormData({ ...formData, is_glitter: checked })}
                   />
-                  <Label htmlFor="is_glitter">Glitter</Label>
+                  <Label htmlFor="is_glitter" className="text-sm">Glitter</Label>
                 </div>
                 <div className="flex items-center gap-2">
                   <Switch
@@ -220,22 +223,22 @@ const ColorsManager = () => {
                     checked={formData.is_shimmer}
                     onCheckedChange={(checked) => setFormData({ ...formData, is_shimmer: checked })}
                   />
-                  <Label htmlFor="is_shimmer">Shimmer</Label>
+                  <Label htmlFor="is_shimmer" className="text-sm">Shimmer</Label>
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label>Foto do Vidro</Label>
-                <div className="flex items-center gap-4">
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label className="text-sm">Foto do Vidro</Label>
+                <div className="flex items-center gap-3 sm:gap-4">
                   {formData.bottle_image_url ? (
                     <img
                       src={formData.bottle_image_url}
                       alt="Vidro"
-                      className="w-16 h-16 object-cover rounded-lg border"
+                      className="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-lg border"
                     />
                   ) : (
-                    <div className="w-16 h-16 bg-muted rounded-lg flex items-center justify-center">
-                      <Image className="h-6 w-6 text-muted-foreground" />
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-muted rounded-lg flex items-center justify-center">
+                      <Image className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground" />
                     </div>
                   )}
                   <label className="cursor-pointer">
@@ -248,9 +251,9 @@ const ColorsManager = () => {
                     <Button type="button" variant="outline" size="sm" asChild disabled={uploadingBottle}>
                       <span>
                         {uploadingBottle ? (
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
                         ) : (
-                          <Upload className="mr-2 h-4 w-4" />
+                          <Upload className="mr-1.5 h-3.5 w-3.5" />
                         )}
                         {formData.bottle_image_url ? 'Trocar' : 'Enviar'}
                       </span>
@@ -259,18 +262,18 @@ const ColorsManager = () => {
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label>Foto nas Unhas</Label>
-                <div className="flex items-center gap-4">
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label className="text-sm">Foto nas Unhas</Label>
+                <div className="flex items-center gap-3 sm:gap-4">
                   {formData.nails_image_url ? (
                     <img
                       src={formData.nails_image_url}
                       alt="Unhas"
-                      className="w-16 h-16 object-cover rounded-lg border"
+                      className="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-lg border"
                     />
                   ) : (
-                    <div className="w-16 h-16 bg-muted rounded-lg flex items-center justify-center">
-                      <Image className="h-6 w-6 text-muted-foreground" />
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-muted rounded-lg flex items-center justify-center">
+                      <Image className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground" />
                     </div>
                   )}
                   <label className="cursor-pointer">
@@ -283,9 +286,9 @@ const ColorsManager = () => {
                     <Button type="button" variant="outline" size="sm" asChild disabled={uploadingNails}>
                       <span>
                         {uploadingNails ? (
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
                         ) : (
-                          <Upload className="mr-2 h-4 w-4" />
+                          <Upload className="mr-1.5 h-3.5 w-3.5" />
                         )}
                         {formData.nails_image_url ? 'Trocar' : 'Enviar'}
                       </span>
@@ -294,13 +297,13 @@ const ColorsManager = () => {
                 </div>
               </div>
 
-              <div className="flex justify-end gap-2 pt-4">
-                <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
+              <div className="flex justify-end gap-2 pt-3 sm:pt-4">
+                <Button type="button" variant="outline" size="sm" onClick={() => setIsDialogOpen(false)}>
                   Cancelar
                 </Button>
-                <Button type="submit" disabled={createColor.isPending || updateColor.isPending}>
+                <Button type="submit" size="sm" disabled={createColor.isPending || updateColor.isPending}>
                   {(createColor.isPending || updateColor.isPending) && (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
                   )}
                   Salvar
                 </Button>
@@ -310,11 +313,11 @@ const ColorsManager = () => {
         </Dialog>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {colors?.map((color) => (
           <Card key={color.id} className="overflow-hidden">
             <div
-              className="h-24 relative"
+              className="h-20 sm:h-24 relative"
               style={{ backgroundColor: color.hex_color }}
             >
               {color.bottle_image_url && (
@@ -325,47 +328,48 @@ const ColorsManager = () => {
                 />
               )}
             </div>
-            <CardContent className="p-4">
+            <CardContent className="p-3 sm:p-4">
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0 flex-1">
-                  <h3 className="font-medium truncate">{color.name}</h3>
-                  <p className="text-sm text-muted-foreground">{color.hex_color}</p>
+                  <h3 className="font-medium truncate text-sm sm:text-base">{color.name}</h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground">{color.hex_color}</p>
                   {color.categories && (
-                    <p className="text-xs text-muted-foreground mt-1">
+                    <p className="text-xs text-muted-foreground mt-0.5 sm:mt-1">
                       {(color.categories as any).icon} {(color.categories as any).name}
                     </p>
                   )}
-                  <div className="flex gap-2 mt-1">
+                  <div className="flex flex-wrap gap-1 sm:gap-2 mt-1">
                     {color.is_glitter && (
-                      <span className="text-xs bg-accent/50 px-2 py-0.5 rounded">✨ Glitter</span>
+                      <span className="text-[10px] sm:text-xs bg-accent/50 px-1.5 sm:px-2 py-0.5 rounded">✨ Glitter</span>
                     )}
                     {color.is_shimmer && (
-                      <span className="text-xs bg-accent/50 px-2 py-0.5 rounded">💫 Shimmer</span>
+                      <span className="text-[10px] sm:text-xs bg-accent/50 px-1.5 sm:px-2 py-0.5 rounded">💫 Shimmer</span>
                     )}
                   </div>
                 </div>
-                <div className="flex gap-1 shrink-0">
+                <div className="flex gap-0.5 sm:gap-1 shrink-0">
                   <Button
                     variant="ghost"
                     size="icon"
+                    className="h-8 w-8 sm:h-9 sm:w-9"
                     onClick={() => handleOpenDialog(color as PolishColor)}
                   >
-                    <Pencil className="h-4 w-4" />
+                    <Pencil className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   </Button>
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
-                      <Button variant="ghost" size="icon">
-                        <Trash2 className="h-4 w-4 text-destructive" />
+                      <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-9 sm:w-9">
+                        <Trash2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-destructive" />
                       </Button>
                     </AlertDialogTrigger>
-                    <AlertDialogContent>
+                    <AlertDialogContent className="max-w-[90vw] sm:max-w-md">
                       <AlertDialogHeader>
                         <AlertDialogTitle>Excluir cor?</AlertDialogTitle>
                         <AlertDialogDescription>
                           Isso irá excluir a cor "{color.name}". Esta ação não pode ser desfeita.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
-                      <AlertDialogFooter>
+                      <AlertDialogFooter className="gap-2">
                         <AlertDialogCancel>Cancelar</AlertDialogCancel>
                         <AlertDialogAction
                           onClick={() => handleDelete(color.id)}
@@ -384,9 +388,9 @@ const ColorsManager = () => {
       </div>
 
       {(!colors || colors.length === 0) && (
-        <div className="text-center py-12 text-muted-foreground">
-          <p>Nenhuma cor cadastrada ainda.</p>
-          <p className="text-sm">Clique em "Nova Cor" para começar.</p>
+        <div className="text-center py-8 sm:py-12 text-muted-foreground">
+          <p className="text-sm sm:text-base">Nenhuma cor cadastrada ainda.</p>
+          <p className="text-xs sm:text-sm">Clique em "Nova Cor" para começar.</p>
         </div>
       )}
     </div>
