@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { usePolishColors, useCreatePolishColor, useUpdatePolishColor, useDeletePolishColor, uploadPolishImage, PolishColor } from '@/hooks/usePolishColors';
+import { usePolishGalleryImages, useUploadGalleryImage, useDeleteGalleryImage } from '@/hooks/usePolishGallery';
 import { useCategories } from '@/hooks/useCategories';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,7 +11,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
-import { Loader2, Plus, Pencil, Trash2, Upload, Image, Camera } from 'lucide-react';
+import { Loader2, Plus, Pencil, Trash2, Upload, Image, Camera, X } from 'lucide-react';
 
 interface FormData {
   name: string;
@@ -44,6 +45,12 @@ const ColorsManager = () => {
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [uploadingBottle, setUploadingBottle] = useState(false);
   const [uploadingNails, setUploadingNails] = useState(false);
+  const [uploadingGallery, setUploadingGallery] = useState(false);
+
+  // Gallery hooks
+  const { data: galleryImages } = usePolishGalleryImages(editingColor?.id || '');
+  const uploadGalleryImage = useUploadGalleryImage();
+  const deleteGalleryImage = useDeleteGalleryImage();
 
   const resetForm = () => {
     setFormData(initialFormData);
@@ -89,6 +96,45 @@ const ColorsManager = () => {
       toast.error('Erro ao enviar imagem');
     } finally {
       setUploading(false);
+    }
+  };
+
+  const handleGalleryImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || !editingColor) return;
+
+    setUploadingGallery(true);
+
+    try {
+      // Upload all selected files
+      const uploadPromises = Array.from(files).map(file =>
+        uploadGalleryImage.mutateAsync({ polishId: editingColor.id, file })
+      );
+
+      await Promise.all(uploadPromises);
+      toast.success(`${files.length} foto(s) adicionada(s) à galeria!`);
+
+      // Reset file input
+      e.target.value = '';
+    } catch (error) {
+      toast.error('Erro ao enviar fotos para galeria');
+    } finally {
+      setUploadingGallery(false);
+    }
+  };
+
+  const handleDeleteGalleryImage = async (imageId: string, imageUrl: string) => {
+    if (!editingColor) return;
+
+    try {
+      await deleteGalleryImage.mutateAsync({
+        id: imageId,
+        imageUrl,
+        polishId: editingColor.id
+      });
+      toast.success('Foto removida da galeria!');
+    } catch (error) {
+      toast.error('Erro ao remover foto');
     }
   };
 
@@ -277,55 +323,94 @@ const ColorsManager = () => {
                 </div>
               </div>
 
-              <div className="space-y-1.5 sm:space-y-2">
-                <Label className="text-sm">Foto nas Unhas</Label>
-                <div className="flex items-center gap-3 sm:gap-4">
-                  {formData.nails_image_url ? (
-                    <img
-                      src={formData.nails_image_url}
-                      alt="Unhas"
-                      className="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-lg border"
-                    />
-                  ) : (
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-muted rounded-lg flex items-center justify-center">
-                      <Image className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground" />
+              <div className="space-y-1.5 sm:space-y-2 py-2 border-t mt-4">
+                <Label className="text-sm font-semibold">Fotos nas Unhas (Catálogo)</Label>
+                <p className="text-xs text-muted-foreground mb-4">
+                  A primeira foto é a principal. Deslize para o lado para ver todas.
+                </p>
+
+                <div className="flex gap-3 overflow-x-auto pb-4 pt-2 -mx-1 px-1 scrollbar-hide">
+                  {/* Main Nail Photo - Legacy Field */}
+                  <div className="flex-shrink-0 w-32 relative group">
+                    <span className="absolute -top-2 left-2 z-10 bg-primary text-[10px] text-white px-2 py-0.5 rounded-full font-bold shadow-sm">
+                      Principal
+                    </span>
+                    {formData.nails_image_url ? (
+                      <div className="relative">
+                        <img
+                          src={formData.nails_image_url}
+                          alt="Principal"
+                          className="w-full aspect-square object-cover rounded-xl border-2 border-primary shadow-sm"
+                        />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl flex items-center justify-center gap-2">
+                          <label className="cursor-pointer p-1.5 bg-white rounded-full text-primary hover:bg-gray-100 transition-colors">
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => handleImageUpload(e, 'nails')}
+                              className="hidden"
+                            />
+                            <Upload className="h-4 w-4" />
+                          </label>
+                        </div>
+                      </div>
+                    ) : (
+                      <label className="cursor-pointer w-full aspect-square bg-muted rounded-xl border-2 border-dashed border-primary/30 flex flex-col items-center justify-center hover:bg-muted/80 transition-colors">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => handleImageUpload(e, 'nails')}
+                          className="hidden"
+                        />
+                        <Image className="h-6 w-6 text-muted-foreground mb-1" />
+                        <span className="text-[10px] font-medium text-muted-foreground">Adicionar Principal</span>
+                      </label>
+                    )}
+                  </div>
+
+                  {/* Gallery Photos */}
+                  {galleryImages?.map((img) => (
+                    <div key={img.id} className="flex-shrink-0 w-32 relative group">
+                      <img
+                        src={img.image_url}
+                        alt="Galeria"
+                        className="w-full aspect-square object-cover rounded-xl border shadow-sm"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteGalleryImage(img.id, img.image_url)}
+                        className="absolute -top-1 -right-1 p-1 bg-destructive text-destructive-foreground rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <X className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+                  ))}
+
+                  {/* Add Gallery Photos Button */}
+                  {editingColor && (
+                    <div className="flex-shrink-0 w-32">
+                      <label className="cursor-pointer w-full aspect-square bg-muted rounded-xl border-2 border-dashed flex flex-col items-center justify-center hover:bg-muted/80 transition-colors">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          onChange={handleGalleryImageUpload}
+                          className="hidden"
+                        />
+                        {uploadingGallery ? (
+                          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                        ) : (
+                          <>
+                            <Plus className="h-6 w-6 text-muted-foreground mb-1" />
+                            <span className="text-[10px] font-medium text-muted-foreground">Adicionar mais</span>
+                          </>
+                        )}
+                      </label>
                     </div>
                   )}
-                  <div className="flex gap-2">
-                    <label className="cursor-pointer">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => handleImageUpload(e, 'nails')}
-                        className="hidden"
-                      />
-                      <Button type="button" variant="outline" size="sm" asChild disabled={uploadingNails}>
-                        <span>
-                          {uploadingNails ? (
-                            <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                          ) : (
-                            <Upload className="h-3.5 w-3.5" />
-                          )}
-                        </span>
-                      </Button>
-                    </label>
-                    <label className="cursor-pointer">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        capture="environment"
-                        onChange={(e) => handleImageUpload(e, 'nails')}
-                        className="hidden"
-                      />
-                      <Button type="button" variant="outline" size="sm" asChild disabled={uploadingNails}>
-                        <span>
-                          <Camera className="h-3.5 w-3.5" />
-                        </span>
-                      </Button>
-                    </label>
-                  </div>
                 </div>
               </div>
+
 
               <div className="flex justify-end gap-2 pt-3 sm:pt-4">
                 <Button type="button" variant="outline" size="sm" onClick={() => setIsDialogOpen(false)}>

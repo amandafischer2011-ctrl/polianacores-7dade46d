@@ -1,7 +1,16 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Tables } from '@/integrations/supabase/types';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { useSelection } from '@/context/SelectionContext';
+import { usePolishGalleryImages } from '@/hooks/usePolishGallery';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  type CarouselApi
+} from "@/components/ui/carousel";
 import { Heart } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -13,9 +22,28 @@ interface PolishSwatchProps {
 
 const PolishSwatch = ({ polish }: PolishSwatchProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
   const { isSelected, toggleSelection } = useSelection();
+  const { data: galleryImages } = usePolishGalleryImages(polish.id);
+
   const selected = isSelected(polish.id);
   const isLight = isColorLight(polish.hex_color);
+
+  // Combine legacy photo with gallery photos
+  const allImages = [
+    ...(polish.nails_image_url ? [polish.nails_image_url] : []),
+    ...(galleryImages?.map(img => img.image_url) || [])
+  ];
+
+  // Update current slide index
+  React.useEffect(() => {
+    if (!api) return;
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap());
+    });
+  }, [api]);
 
   return (
     <>
@@ -33,8 +61,8 @@ const PolishSwatch = ({ polish }: PolishSwatchProps) => {
               if (navigator.vibrate) navigator.vibrate(20);
             }}
             className={`absolute -top-2 -right-2 z-20 rounded-full p-2 shadow-md transition-all duration-200 ${selected
-                ? 'bg-primary text-primary-foreground scale-110'
-                : 'bg-white/80 text-muted-foreground hover:bg-white hover:text-primary hover:scale-105'
+              ? 'bg-primary text-primary-foreground scale-110'
+              : 'bg-white/80 text-muted-foreground hover:bg-white hover:text-primary hover:scale-105'
               }`}
             aria-label={selected ? "Remover dos favoritos" : "Adicionar aos favoritos"}
           >
@@ -128,14 +156,47 @@ const PolishSwatch = ({ polish }: PolishSwatchProps) => {
               )}
             </div>
 
-            {polish.nails_image_url && (
+            {allImages.length > 0 && (
               <div className="w-full">
-                <p className="text-xs sm:text-sm text-muted-foreground mb-2 text-center">Como fica nas unhas:</p>
-                <img
-                  src={polish.nails_image_url}
-                  alt={`${polish.name} nas unhas`}
-                  className="w-full rounded-lg object-cover max-h-48 sm:max-h-64"
-                />
+                <p className="text-xs sm:text-sm text-muted-foreground mb-2 text-center">
+                  Como fica nas unhas:
+                </p>
+
+                <div className="relative group/carousel">
+                  <Carousel setApi={setApi} className="w-full">
+                    <CarouselContent>
+                      {allImages.map((url, index) => (
+                        <CarouselItem key={index}>
+                          <img
+                            src={url}
+                            alt={`${polish.name} nas unhas - foto ${index + 1}`}
+                            className="w-full rounded-lg object-cover aspect-square sm:aspect-video"
+                          />
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+
+                    {allImages.length > 1 && (
+                      <>
+                        <div className="hidden sm:block">
+                          <CarouselPrevious className="left-2 opacity-0 group-hover/carousel:opacity-100 transition-opacity" />
+                          <CarouselNext className="right-2 opacity-0 group-hover/carousel:opacity-100 transition-opacity" />
+                        </div>
+
+                        {/* Pagination Dots */}
+                        <div className="flex justify-center gap-1.5 mt-2">
+                          {allImages.map((_, index) => (
+                            <div
+                              key={index}
+                              className={`h-1.5 rounded-full transition-all ${current === index ? "w-4 bg-primary" : "w-1.5 bg-primary/20"
+                                }`}
+                            />
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </Carousel>
+                </div>
               </div>
             )}
 
@@ -146,8 +207,8 @@ const PolishSwatch = ({ polish }: PolishSwatchProps) => {
                 toast.success(selected ? 'Removido da lista' : 'Adicionado à lista');
               }}
               className={`w-full py-3 rounded-xl font-medium flex items-center justify-center gap-2 transition-colors ${selected
-                  ? 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
-                  : 'bg-primary text-primary-foreground hover:bg-primary/90'
+                ? 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
+                : 'bg-primary text-primary-foreground hover:bg-primary/90'
                 }`}
             >
               <Heart className={`w-5 h-5 ${selected ? 'fill-current' : ''}`} />
