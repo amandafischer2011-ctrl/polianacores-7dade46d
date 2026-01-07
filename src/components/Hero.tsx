@@ -1,27 +1,29 @@
+import logo from '@/assets/logo.png';
+
 const Hero = () => {
   return (
-    <header className="relative overflow-hidden bg-gradient-to-br from-blush via-background to-cream py-16 md:py-24">
+    <header className="relative overflow-hidden bg-gradient-to-br from-blush via-background to-cream py-12 md:py-20">
       {/* Decorative elements */}
       <div className="absolute top-10 right-10 w-32 h-32 rounded-full bg-primary/10 blur-3xl" />
       <div className="absolute bottom-10 left-10 w-40 h-40 rounded-full bg-accent/10 blur-3xl" />
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center max-w-3xl mx-auto">
-          {/* Logo/Brand */}
-          <div className="mb-6 inline-block">
-            <div className="flex items-center justify-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-primary animate-float" style={{ animationDelay: '0s' }} />
-              <div className="w-2 h-2 rounded-full bg-accent animate-float" style={{ animationDelay: '0.5s' }} />
-              <div className="w-3 h-3 rounded-full bg-rose-gold animate-float" style={{ animationDelay: '1s' }} />
-            </div>
+          {/* Logo */}
+          <div className="mb-8">
+            <img 
+              src={logo} 
+              alt="Poliana Roncaglio - Manicure e Nail Designer" 
+              className="h-24 md:h-32 w-auto mx-auto object-contain"
+            />
           </div>
           
-          <h1 className="text-4xl md:text-6xl font-serif font-semibold text-foreground mb-4 tracking-tight">
+          <div className="section-divider my-6" />
+          
+          <h1 className="text-3xl md:text-5xl font-serif font-semibold text-foreground mb-4 tracking-tight">
             Catálogo de
             <span className="text-gradient-rose block mt-2">Esmaltes</span>
           </h1>
-          
-          <div className="section-divider my-6" />
           
           <p className="text-lg md:text-xl text-muted-foreground font-light max-w-xl mx-auto">
             Descubra a cor perfeita para expressar sua personalidade. 
