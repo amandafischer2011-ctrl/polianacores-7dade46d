@@ -111,6 +111,7 @@ export type Database = {
       }
       polish_gallery_images: {
         Row: {
+<<<<<<< HEAD
           id: string
           polish_id: string
           image_url: string
@@ -130,6 +131,27 @@ export type Database = {
           image_url?: string
           order_position?: number | null
           created_at?: string
+=======
+          created_at: string | null
+          id: string
+          image_url: string
+          order_position: number | null
+          polish_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          image_url: string
+          order_position?: number | null
+          polish_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          image_url?: string
+          order_position?: number | null
+          polish_id?: string
+>>>>>>> 0cd16d4b6d2cc111ac5c2a00bfa6ae70e2fbba01
         }
         Relationships: [
           {
