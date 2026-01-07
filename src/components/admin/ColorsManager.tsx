@@ -356,19 +356,43 @@ const ColorsManager = () => {
                             />
                             <Upload className="h-4 w-4" />
                           </label>
+                          <label className="cursor-pointer p-1.5 bg-white rounded-full text-primary hover:bg-gray-100 transition-colors">
+                            <input
+                              type="file"
+                              accept="image/*"
+                              capture="environment"
+                              onChange={(e) => handleImageUpload(e, 'nails')}
+                              className="hidden"
+                            />
+                            <Camera className="h-4 w-4" />
+                          </label>
                         </div>
                       </div>
                     ) : (
-                      <label className="cursor-pointer w-full aspect-square bg-muted rounded-xl border-2 border-dashed border-primary/30 flex flex-col items-center justify-center hover:bg-muted/80 transition-colors">
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => handleImageUpload(e, 'nails')}
-                          className="hidden"
-                        />
-                        <Image className="h-6 w-6 text-muted-foreground mb-1" />
-                        <span className="text-[10px] font-medium text-muted-foreground">Adicionar Principal</span>
-                      </label>
+                      <div className="w-full aspect-square bg-muted rounded-xl border-2 border-dashed border-primary/30 flex flex-col items-center justify-center">
+                        <Image className="h-6 w-6 text-muted-foreground mb-2" />
+                        <div className="flex gap-1">
+                          <label className="cursor-pointer p-1.5 bg-primary/10 rounded-full text-primary hover:bg-primary/20 transition-colors">
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => handleImageUpload(e, 'nails')}
+                              className="hidden"
+                            />
+                            <Upload className="h-4 w-4" />
+                          </label>
+                          <label className="cursor-pointer p-1.5 bg-primary/10 rounded-full text-primary hover:bg-primary/20 transition-colors">
+                            <input
+                              type="file"
+                              accept="image/*"
+                              capture="environment"
+                              onChange={(e) => handleImageUpload(e, 'nails')}
+                              className="hidden"
+                            />
+                            <Camera className="h-4 w-4" />
+                          </label>
+                        </div>
+                      </div>
                     )}
                   </div>
 
@@ -390,26 +414,40 @@ const ColorsManager = () => {
                     </div>
                   ))}
 
-                  {/* Add Gallery Photos Button */}
+                  {/* Add Gallery Photos Buttons */}
                   {editingColor && (
                     <div className="flex-shrink-0 w-32">
-                      <label className="cursor-pointer w-full aspect-square bg-muted rounded-xl border-2 border-dashed flex flex-col items-center justify-center hover:bg-muted/80 transition-colors">
-                        <input
-                          type="file"
-                          accept="image/*"
-                          multiple
-                          onChange={handleGalleryImageUpload}
-                          className="hidden"
-                        />
+                      <div className="w-full aspect-square bg-muted rounded-xl border-2 border-dashed flex flex-col items-center justify-center">
                         {uploadingGallery ? (
                           <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
                         ) : (
                           <>
-                            <Plus className="h-6 w-6 text-muted-foreground mb-1" />
-                            <span className="text-[10px] font-medium text-muted-foreground">Adicionar mais</span>
+                            <Plus className="h-5 w-5 text-muted-foreground mb-2" />
+                            <div className="flex gap-1">
+                              <label className="cursor-pointer p-1.5 bg-muted-foreground/10 rounded-full text-muted-foreground hover:bg-muted-foreground/20 transition-colors">
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  multiple
+                                  onChange={handleGalleryImageUpload}
+                                  className="hidden"
+                                />
+                                <Upload className="h-4 w-4" />
+                              </label>
+                              <label className="cursor-pointer p-1.5 bg-muted-foreground/10 rounded-full text-muted-foreground hover:bg-muted-foreground/20 transition-colors">
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  capture="environment"
+                                  onChange={handleGalleryImageUpload}
+                                  className="hidden"
+                                />
+                                <Camera className="h-4 w-4" />
+                              </label>
+                            </div>
                           </>
                         )}
-                      </label>
+                      </div>
                     </div>
                   )}
                 </div>
