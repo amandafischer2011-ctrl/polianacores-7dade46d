@@ -10,7 +10,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
-import { Loader2, Plus, Pencil, Trash2, Upload, Image } from 'lucide-react';
+import { Loader2, Plus, Pencil, Trash2, Upload, Image, Camera } from 'lucide-react';
 
 interface FormData {
   name: string;
@@ -241,24 +241,39 @@ const ColorsManager = () => {
                       <Image className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground" />
                     </div>
                   )}
-                  <label className="cursor-pointer">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => handleImageUpload(e, 'bottles')}
-                      className="hidden"
-                    />
-                    <Button type="button" variant="outline" size="sm" asChild disabled={uploadingBottle}>
-                      <span>
-                        {uploadingBottle ? (
-                          <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
-                        ) : (
-                          <Upload className="mr-1.5 h-3.5 w-3.5" />
-                        )}
-                        {formData.bottle_image_url ? 'Trocar' : 'Enviar'}
-                      </span>
-                    </Button>
-                  </label>
+                  <div className="flex gap-2">
+                    <label className="cursor-pointer">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => handleImageUpload(e, 'bottles')}
+                        className="hidden"
+                      />
+                      <Button type="button" variant="outline" size="sm" asChild disabled={uploadingBottle}>
+                        <span>
+                          {uploadingBottle ? (
+                            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                          ) : (
+                            <Upload className="h-3.5 w-3.5" />
+                          )}
+                        </span>
+                      </Button>
+                    </label>
+                    <label className="cursor-pointer">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        capture="environment"
+                        onChange={(e) => handleImageUpload(e, 'bottles')}
+                        className="hidden"
+                      />
+                      <Button type="button" variant="outline" size="sm" asChild disabled={uploadingBottle}>
+                        <span>
+                          <Camera className="h-3.5 w-3.5" />
+                        </span>
+                      </Button>
+                    </label>
+                  </div>
                 </div>
               </div>
 
@@ -276,24 +291,39 @@ const ColorsManager = () => {
                       <Image className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground" />
                     </div>
                   )}
-                  <label className="cursor-pointer">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => handleImageUpload(e, 'nails')}
-                      className="hidden"
-                    />
-                    <Button type="button" variant="outline" size="sm" asChild disabled={uploadingNails}>
-                      <span>
-                        {uploadingNails ? (
-                          <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
-                        ) : (
-                          <Upload className="mr-1.5 h-3.5 w-3.5" />
-                        )}
-                        {formData.nails_image_url ? 'Trocar' : 'Enviar'}
-                      </span>
-                    </Button>
-                  </label>
+                  <div className="flex gap-2">
+                    <label className="cursor-pointer">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => handleImageUpload(e, 'nails')}
+                        className="hidden"
+                      />
+                      <Button type="button" variant="outline" size="sm" asChild disabled={uploadingNails}>
+                        <span>
+                          {uploadingNails ? (
+                            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                          ) : (
+                            <Upload className="h-3.5 w-3.5" />
+                          )}
+                        </span>
+                      </Button>
+                    </label>
+                    <label className="cursor-pointer">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        capture="environment"
+                        onChange={(e) => handleImageUpload(e, 'nails')}
+                        className="hidden"
+                      />
+                      <Button type="button" variant="outline" size="sm" asChild disabled={uploadingNails}>
+                        <span>
+                          <Camera className="h-3.5 w-3.5" />
+                        </span>
+                      </Button>
+                    </label>
+                  </div>
                 </div>
               </div>
 
