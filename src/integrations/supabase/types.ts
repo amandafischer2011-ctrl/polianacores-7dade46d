@@ -109,6 +109,38 @@ export type Database = {
           },
         ]
       }
+      polish_gallery_images: {
+        Row: {
+          created_at: string | null
+          id: string
+          image_url: string
+          order_position: number | null
+          polish_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          image_url: string
+          order_position?: number | null
+          polish_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          image_url?: string
+          order_position?: number | null
+          polish_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "polish_gallery_images_polish_id_fkey"
+            columns: ["polish_id"]
+            isOneToOne: false
+            referencedRelation: "polish_colors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
