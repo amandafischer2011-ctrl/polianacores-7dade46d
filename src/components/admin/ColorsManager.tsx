@@ -273,52 +273,56 @@ const ColorsManager = () => {
                 </div>
               </div>
 
-              <div className="space-y-1.5 sm:space-y-2">
+              <div className="space-y-2">
                 <Label className="text-sm">Foto do Vidro</Label>
-                <div className="flex items-center gap-3 sm:gap-4">
-                  {formData.bottle_image_url ? (
-                    <img
-                      src={formData.bottle_image_url}
-                      alt="Vidro"
-                      className="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-lg border"
-                    />
-                  ) : (
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-muted rounded-lg flex items-center justify-center">
-                      <Image className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground" />
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                  <div className="flex items-center gap-3 w-full sm:w-auto">
+                    {formData.bottle_image_url ? (
+                      <img
+                        src={formData.bottle_image_url}
+                        alt="Vidro"
+                        className="w-14 h-14 sm:w-16 sm:h-16 object-cover rounded-lg border flex-shrink-0"
+                      />
+                    ) : (
+                      <div className="w-14 h-14 sm:w-16 sm:h-16 bg-muted rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Image className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground" />
+                      </div>
+                    )}
+                    <div className="flex gap-2 flex-1 sm:flex-initial">
+                      <label className="cursor-pointer flex-1 sm:flex-initial">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => handleImageUpload(e, 'bottles')}
+                          className="hidden"
+                        />
+                        <Button type="button" variant="outline" size="sm" className="w-full sm:w-auto" asChild disabled={uploadingBottle}>
+                          <span className="flex items-center justify-center gap-1.5">
+                            {uploadingBottle ? (
+                              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                            ) : (
+                              <Upload className="h-3.5 w-3.5" />
+                            )}
+                            <span className="sm:hidden">Galeria</span>
+                          </span>
+                        </Button>
+                      </label>
+                      <label className="cursor-pointer flex-1 sm:flex-initial">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          capture="environment"
+                          onChange={(e) => handleImageUpload(e, 'bottles')}
+                          className="hidden"
+                        />
+                        <Button type="button" variant="outline" size="sm" className="w-full sm:w-auto" asChild disabled={uploadingBottle}>
+                          <span className="flex items-center justify-center gap-1.5">
+                            <Camera className="h-3.5 w-3.5" />
+                            <span className="sm:hidden">Câmera</span>
+                          </span>
+                        </Button>
+                      </label>
                     </div>
-                  )}
-                  <div className="flex gap-2">
-                    <label className="cursor-pointer">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => handleImageUpload(e, 'bottles')}
-                        className="hidden"
-                      />
-                      <Button type="button" variant="outline" size="sm" asChild disabled={uploadingBottle}>
-                        <span>
-                          {uploadingBottle ? (
-                            <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                          ) : (
-                            <Upload className="h-3.5 w-3.5" />
-                          )}
-                        </span>
-                      </Button>
-                    </label>
-                    <label className="cursor-pointer">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        capture="environment"
-                        onChange={(e) => handleImageUpload(e, 'bottles')}
-                        className="hidden"
-                      />
-                      <Button type="button" variant="outline" size="sm" asChild disabled={uploadingBottle}>
-                        <span>
-                          <Camera className="h-3.5 w-3.5" />
-                        </span>
-                      </Button>
-                    </label>
                   </div>
                 </div>
               </div>
