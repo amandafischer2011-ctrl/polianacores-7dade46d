@@ -195,52 +195,63 @@ const ColorsManager = () => {
               <span className="sm:hidden">Nova</span>
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-[95vw] sm:max-w-lg max-h-[85vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle className="text-lg sm:text-xl">
+          <DialogContent className="max-w-[95vw] sm:max-w-lg max-h-[90vh] overflow-y-auto p-4 sm:p-6">
+            <DialogHeader className="pb-2 sm:pb-4">
+              <DialogTitle className="text-base sm:text-xl">
                 {editingColor ? 'Editar Cor' : 'Nova Cor'}
               </DialogTitle>
             </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
-              <div className="space-y-1.5 sm:space-y-2">
-                <Label htmlFor="name" className="text-sm">Nome</Label>
-                <Input
-                  id="name"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="Ex: Vermelho Clássico"
-                  required
-                  className="h-9 sm:h-10"
-                />
+            <form onSubmit={handleSubmit} className="space-y-2.5 sm:space-y-4">
+              {/* Nome e Cor na mesma linha no mobile */}
+              <div className="grid grid-cols-[1fr,auto] sm:grid-cols-1 gap-2 sm:gap-3 items-end">
+                <div className="space-y-1">
+                  <Label htmlFor="name" className="text-xs sm:text-sm">Nome</Label>
+                  <Input
+                    id="name"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    placeholder="Ex: Vermelho Clássico"
+                    required
+                    className="h-8 sm:h-10 text-sm"
+                  />
+                </div>
+                <div className="sm:hidden">
+                  <Input
+                    type="color"
+                    value={formData.hex_color}
+                    onChange={(e) => setFormData({ ...formData, hex_color: e.target.value })}
+                    className="w-10 h-8 p-0.5 cursor-pointer"
+                  />
+                </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                <div className="space-y-1.5 sm:space-y-2">
-                  <Label htmlFor="hex_color" className="text-sm">Cor (Hex)</Label>
-                  <div className="flex gap-2">
+              <div className="grid grid-cols-2 gap-2 sm:gap-4">
+                <div className="space-y-1">
+                  <Label htmlFor="hex_color" className="text-xs sm:text-sm">Cor (Hex)</Label>
+                  <div className="flex gap-1.5 sm:gap-2">
                     <Input
                       type="color"
                       value={formData.hex_color}
                       onChange={(e) => setFormData({ ...formData, hex_color: e.target.value })}
-                      className="w-12 sm:w-14 h-9 sm:h-10 p-1 cursor-pointer"
+                      className="hidden sm:block w-14 h-10 p-1 cursor-pointer"
                     />
                     <Input
                       id="hex_color"
                       value={formData.hex_color}
                       onChange={(e) => setFormData({ ...formData, hex_color: e.target.value })}
                       placeholder="#FFFFFF"
-                      className="h-9 sm:h-10"
+                      className="h-8 sm:h-10 text-sm"
                     />
                   </div>
                 </div>
 
-                <div className="space-y-1.5 sm:space-y-2">
-                  <Label htmlFor="category" className="text-sm">Categoria</Label>
+                <div className="space-y-1">
+                  <Label htmlFor="category" className="text-xs sm:text-sm">Categoria</Label>
                   <Select
                     value={formData.category_id}
                     onValueChange={(value) => setFormData({ ...formData, category_id: value })}
                   >
-                    <SelectTrigger className="h-9 sm:h-10">
+                    <SelectTrigger className="h-8 sm:h-10 text-sm">
                       <SelectValue placeholder="Selecione..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -254,89 +265,88 @@ const ColorsManager = () => {
                 </div>
               </div>
 
-              <div className="flex gap-4 sm:gap-6">
-                <div className="flex items-center gap-2">
+              {/* Switches inline mais compactos */}
+              <div className="flex gap-4">
+                <div className="flex items-center gap-1.5">
                   <Switch
                     id="is_glitter"
                     checked={formData.is_glitter}
                     onCheckedChange={(checked) => setFormData({ ...formData, is_glitter: checked })}
+                    className="scale-90 sm:scale-100"
                   />
-                  <Label htmlFor="is_glitter" className="text-sm">Glitter</Label>
+                  <Label htmlFor="is_glitter" className="text-xs sm:text-sm">Glitter</Label>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5">
                   <Switch
                     id="is_shimmer"
                     checked={formData.is_shimmer}
                     onCheckedChange={(checked) => setFormData({ ...formData, is_shimmer: checked })}
+                    className="scale-90 sm:scale-100"
                   />
-                  <Label htmlFor="is_shimmer" className="text-sm">Shimmer</Label>
+                  <Label htmlFor="is_shimmer" className="text-xs sm:text-sm">Shimmer</Label>
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label className="text-sm">Foto do Vidro</Label>
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-                  <div className="flex items-center gap-3 w-full sm:w-auto">
-                    {formData.bottle_image_url ? (
-                      <img
-                        src={formData.bottle_image_url}
-                        alt="Vidro"
-                        className="w-14 h-14 sm:w-16 sm:h-16 object-cover rounded-lg border flex-shrink-0"
-                      />
-                    ) : (
-                      <div className="w-14 h-14 sm:w-16 sm:h-16 bg-muted rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Image className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground" />
-                      </div>
-                    )}
-                    <div className="flex gap-2 flex-1 sm:flex-initial">
-                      <label className="cursor-pointer flex-1 sm:flex-initial">
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => handleImageUpload(e, 'bottles')}
-                          className="hidden"
-                        />
-                        <Button type="button" variant="outline" size="sm" className="w-full sm:w-auto" asChild disabled={uploadingBottle}>
-                          <span className="flex items-center justify-center gap-1.5">
-                            {uploadingBottle ? (
-                              <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                            ) : (
-                              <Upload className="h-3.5 w-3.5" />
-                            )}
-                            <span className="sm:hidden">Galeria</span>
-                          </span>
-                        </Button>
-                      </label>
-                      <label className="cursor-pointer flex-1 sm:flex-initial">
-                        <input
-                          type="file"
-                          accept="image/*"
-                          capture="environment"
-                          onChange={(e) => handleImageUpload(e, 'bottles')}
-                          className="hidden"
-                        />
-                        <Button type="button" variant="outline" size="sm" className="w-full sm:w-auto" asChild disabled={uploadingBottle}>
-                          <span className="flex items-center justify-center gap-1.5">
-                            <Camera className="h-3.5 w-3.5" />
-                            <span className="sm:hidden">Câmera</span>
-                          </span>
-                        </Button>
-                      </label>
-                    </div>
+              {/* Foto do Vidro - mais compacta */}
+              <div className="flex items-center gap-2 py-1.5 sm:py-2 border-t">
+                <Label className="text-xs sm:text-sm whitespace-nowrap">Vidro:</Label>
+                {formData.bottle_image_url ? (
+                  <img
+                    src={formData.bottle_image_url}
+                    alt="Vidro"
+                    className="w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-lg border flex-shrink-0"
+                  />
+                ) : (
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-muted rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Image className="h-4 w-4 text-muted-foreground" />
                   </div>
+                )}
+                <div className="flex gap-1.5 ml-auto">
+                  <label className="cursor-pointer">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleImageUpload(e, 'bottles')}
+                      className="hidden"
+                    />
+                    <Button type="button" variant="outline" size="sm" className="h-8 px-2.5" asChild disabled={uploadingBottle}>
+                      <span className="flex items-center gap-1">
+                        {uploadingBottle ? (
+                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        ) : (
+                          <Upload className="h-3.5 w-3.5" />
+                        )}
+                      </span>
+                    </Button>
+                  </label>
+                  <label className="cursor-pointer">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      capture="environment"
+                      onChange={(e) => handleImageUpload(e, 'bottles')}
+                      className="hidden"
+                    />
+                    <Button type="button" variant="outline" size="sm" className="h-8 px-2.5" asChild disabled={uploadingBottle}>
+                      <span>
+                        <Camera className="h-3.5 w-3.5" />
+                      </span>
+                    </Button>
+                  </label>
                 </div>
               </div>
 
-              <div className="space-y-1.5 sm:space-y-2 py-2 border-t mt-4">
-                <Label className="text-sm font-semibold">Fotos nas Unhas (Catálogo)</Label>
-                <p className="text-xs text-muted-foreground mb-4">
-                  A primeira foto é a principal. Deslize para o lado para ver todas.
-                </p>
+              {/* Galeria mais compacta */}
+              <div className="space-y-1.5 pt-1.5">
+                <div className="flex items-center justify-between">
+                  <Label className="text-xs sm:text-sm font-semibold">Fotos nas Unhas</Label>
+                  <span className="text-[10px] text-muted-foreground">Deslize →</span>
+                </div>
 
-                <div className="flex gap-3 overflow-x-auto pb-4 pt-2 -mx-1 px-1 scrollbar-hide">
-                  {/* Main Nail Photo - Legacy Field */}
-                  <div className="flex-shrink-0 w-32 relative group">
-                    <span className="absolute -top-2 left-2 z-10 bg-primary text-[10px] text-white px-2 py-0.5 rounded-full font-bold shadow-sm">
+                <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1 scrollbar-hide">
+                  {/* Main Nail Photo */}
+                  <div className="flex-shrink-0 w-20 sm:w-28 relative group">
+                    <span className="absolute -top-1.5 left-1 z-10 bg-primary text-[8px] sm:text-[10px] text-white px-1.5 py-0.5 rounded-full font-bold">
                       Principal
                     </span>
                     {formData.nails_image_url ? (
@@ -344,19 +354,19 @@ const ColorsManager = () => {
                         <img
                           src={formData.nails_image_url}
                           alt="Principal"
-                          className="w-full aspect-square object-cover rounded-xl border-2 border-primary shadow-sm"
+                          className="w-full aspect-square object-cover rounded-lg border-2 border-primary"
                         />
-                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl flex items-center justify-center gap-2">
-                          <label className="cursor-pointer p-1.5 bg-white rounded-full text-primary hover:bg-gray-100 transition-colors">
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center gap-1">
+                          <label className="cursor-pointer p-1 bg-white rounded-full text-primary">
                             <input
                               type="file"
                               accept="image/*"
                               onChange={(e) => handleImageUpload(e, 'nails')}
                               className="hidden"
                             />
-                            <Upload className="h-4 w-4" />
+                            <Upload className="h-3 w-3" />
                           </label>
-                          <label className="cursor-pointer p-1.5 bg-white rounded-full text-primary hover:bg-gray-100 transition-colors">
+                          <label className="cursor-pointer p-1 bg-white rounded-full text-primary">
                             <input
                               type="file"
                               accept="image/*"
@@ -364,24 +374,23 @@ const ColorsManager = () => {
                               onChange={(e) => handleImageUpload(e, 'nails')}
                               className="hidden"
                             />
-                            <Camera className="h-4 w-4" />
+                            <Camera className="h-3 w-3" />
                           </label>
                         </div>
                       </div>
                     ) : (
-                      <div className="w-full aspect-square bg-muted rounded-xl border-2 border-dashed border-primary/30 flex flex-col items-center justify-center">
-                        <Image className="h-6 w-6 text-muted-foreground mb-2" />
+                      <div className="w-full aspect-square bg-muted rounded-lg border-2 border-dashed border-primary/30 flex flex-col items-center justify-center">
                         <div className="flex gap-1">
-                          <label className="cursor-pointer p-1.5 bg-primary/10 rounded-full text-primary hover:bg-primary/20 transition-colors">
+                          <label className="cursor-pointer p-1.5 bg-primary/10 rounded-full text-primary">
                             <input
                               type="file"
                               accept="image/*"
                               onChange={(e) => handleImageUpload(e, 'nails')}
                               className="hidden"
                             />
-                            <Upload className="h-4 w-4" />
+                            <Upload className="h-3 w-3" />
                           </label>
-                          <label className="cursor-pointer p-1.5 bg-primary/10 rounded-full text-primary hover:bg-primary/20 transition-colors">
+                          <label className="cursor-pointer p-1.5 bg-primary/10 rounded-full text-primary">
                             <input
                               type="file"
                               accept="image/*"
@@ -389,7 +398,7 @@ const ColorsManager = () => {
                               onChange={(e) => handleImageUpload(e, 'nails')}
                               className="hidden"
                             />
-                            <Camera className="h-4 w-4" />
+                            <Camera className="h-3 w-3" />
                           </label>
                         </div>
                       </div>
@@ -398,54 +407,51 @@ const ColorsManager = () => {
 
                   {/* Gallery Photos */}
                   {galleryImages?.map((img) => (
-                    <div key={img.id} className="flex-shrink-0 w-32 relative group">
+                    <div key={img.id} className="flex-shrink-0 w-20 sm:w-28 relative group">
                       <img
                         src={img.image_url}
                         alt="Galeria"
-                        className="w-full aspect-square object-cover rounded-xl border shadow-sm"
+                        className="w-full aspect-square object-cover rounded-lg border"
                       />
                       <button
                         type="button"
                         onClick={() => handleDeleteGalleryImage(img.id, img.image_url)}
-                        className="absolute -top-1 -right-1 p-1 bg-destructive text-destructive-foreground rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="absolute -top-1 -right-1 p-0.5 bg-destructive text-destructive-foreground rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
                       >
-                        <X className="h-3.5 w-3.5" />
+                        <X className="h-3 w-3" />
                       </button>
                     </div>
                   ))}
 
-                  {/* Add Gallery Photos Buttons */}
+                  {/* Add Gallery Photos */}
                   {editingColor && (
-                    <div className="flex-shrink-0 w-32">
-                      <div className="w-full aspect-square bg-muted rounded-xl border-2 border-dashed flex flex-col items-center justify-center">
+                    <div className="flex-shrink-0 w-20 sm:w-28">
+                      <div className="w-full aspect-square bg-muted rounded-lg border-2 border-dashed flex flex-col items-center justify-center">
                         {uploadingGallery ? (
-                          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                          <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
                         ) : (
-                          <>
-                            <Plus className="h-5 w-5 text-muted-foreground mb-2" />
-                            <div className="flex gap-1">
-                              <label className="cursor-pointer p-1.5 bg-muted-foreground/10 rounded-full text-muted-foreground hover:bg-muted-foreground/20 transition-colors">
-                                <input
-                                  type="file"
-                                  accept="image/*"
-                                  multiple
-                                  onChange={handleGalleryImageUpload}
-                                  className="hidden"
-                                />
-                                <Upload className="h-4 w-4" />
-                              </label>
-                              <label className="cursor-pointer p-1.5 bg-muted-foreground/10 rounded-full text-muted-foreground hover:bg-muted-foreground/20 transition-colors">
-                                <input
-                                  type="file"
-                                  accept="image/*"
-                                  capture="environment"
-                                  onChange={handleGalleryImageUpload}
-                                  className="hidden"
-                                />
-                                <Camera className="h-4 w-4" />
-                              </label>
-                            </div>
-                          </>
+                          <div className="flex gap-1">
+                            <label className="cursor-pointer p-1.5 bg-muted-foreground/10 rounded-full text-muted-foreground">
+                              <input
+                                type="file"
+                                accept="image/*"
+                                multiple
+                                onChange={handleGalleryImageUpload}
+                                className="hidden"
+                              />
+                              <Upload className="h-3 w-3" />
+                            </label>
+                            <label className="cursor-pointer p-1.5 bg-muted-foreground/10 rounded-full text-muted-foreground">
+                              <input
+                                type="file"
+                                accept="image/*"
+                                capture="environment"
+                                onChange={handleGalleryImageUpload}
+                                className="hidden"
+                              />
+                              <Camera className="h-3 w-3" />
+                            </label>
+                          </div>
                         )}
                       </div>
                     </div>
@@ -454,13 +460,13 @@ const ColorsManager = () => {
               </div>
 
 
-              <div className="flex justify-end gap-2 pt-3 sm:pt-4">
-                <Button type="button" variant="outline" size="sm" onClick={() => setIsDialogOpen(false)}>
+              <div className="flex justify-end gap-2 pt-2 sm:pt-4 border-t">
+                <Button type="button" variant="outline" size="sm" className="h-8" onClick={() => setIsDialogOpen(false)}>
                   Cancelar
                 </Button>
-                <Button type="submit" size="sm" disabled={createColor.isPending || updateColor.isPending}>
+                <Button type="submit" size="sm" className="h-8" disabled={createColor.isPending || updateColor.isPending}>
                   {(createColor.isPending || updateColor.isPending) && (
-                    <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
+                    <Loader2 className="mr-1 h-3 w-3 animate-spin" />
                   )}
                   Salvar
                 </Button>
