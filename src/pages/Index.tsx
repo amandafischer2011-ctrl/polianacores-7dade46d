@@ -34,7 +34,7 @@ const Index = () => {
             onCategoryClick={setActiveCategory} 
           />
           
-          <main className="container mx-auto px-4 pb-8">
+          <main className="container mx-auto px-3 sm:px-4 pb-6 sm:pb-8">
             {filteredCategories?.map((category) => {
               const categoryColors = polishColors?.filter(
                 (color) => color.category_id === category.id
