@@ -14,7 +14,101 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      admin_profile: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      categories: {
+        Row: {
+          created_at: string
+          icon: string | null
+          id: string
+          name: string
+          order_position: number | null
+        }
+        Insert: {
+          created_at?: string
+          icon?: string | null
+          id?: string
+          name: string
+          order_position?: number | null
+        }
+        Update: {
+          created_at?: string
+          icon?: string | null
+          id?: string
+          name?: string
+          order_position?: number | null
+        }
+        Relationships: []
+      }
+      polish_colors: {
+        Row: {
+          bottle_image_url: string | null
+          category_id: string | null
+          created_at: string
+          hex_color: string
+          id: string
+          is_glitter: boolean | null
+          is_shimmer: boolean | null
+          nails_image_url: string | null
+          name: string
+          order_position: number | null
+          updated_at: string
+        }
+        Insert: {
+          bottle_image_url?: string | null
+          category_id?: string | null
+          created_at?: string
+          hex_color?: string
+          id?: string
+          is_glitter?: boolean | null
+          is_shimmer?: boolean | null
+          nails_image_url?: string | null
+          name: string
+          order_position?: number | null
+          updated_at?: string
+        }
+        Update: {
+          bottle_image_url?: string | null
+          category_id?: string | null
+          created_at?: string
+          hex_color?: string
+          id?: string
+          is_glitter?: boolean | null
+          is_shimmer?: boolean | null
+          nails_image_url?: string | null
+          name?: string
+          order_position?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "polish_colors_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

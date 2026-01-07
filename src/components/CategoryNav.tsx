@@ -1,11 +1,12 @@
-import { categories } from '@/data/polishColors';
+import { Category } from '@/hooks/useCategories';
 
 interface CategoryNavProps {
+  categories: Category[];
   activeCategory: string | null;
   onCategoryClick: (categoryId: string | null) => void;
 }
 
-const CategoryNav = ({ activeCategory, onCategoryClick }: CategoryNavProps) => {
+const CategoryNav = ({ categories, activeCategory, onCategoryClick }: CategoryNavProps) => {
   return (
     <nav className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-border py-4 mb-8">
       <div className="container mx-auto px-4">
