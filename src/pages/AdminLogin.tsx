@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
-import { Loader2, Lock } from 'lucide-react';
+import { Loader2, Lock, ArrowLeft } from 'lucide-react';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
@@ -29,8 +29,8 @@ const AdminLogin = () => {
 
     if (error) {
       toast.error('Erro ao fazer login', {
-        description: error.message === 'Invalid login credentials' 
-          ? 'Email ou senha incorretos' 
+        description: error.message === 'Invalid login credentials'
+          ? 'Email ou senha incorretos'
           : error.message,
       });
       setIsLoading(false);
@@ -95,6 +95,25 @@ const AdminLogin = () => {
               ) : (
                 'Entrar'
               )}
+            </Button>
+
+            <div className="relative my-4">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-card px-2 text-muted-foreground">ou</span>
+              </div>
+            </div>
+
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={() => navigate('/')}
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Sou Cliente - Voltar ao Catálogo
             </Button>
           </form>
         </CardContent>
