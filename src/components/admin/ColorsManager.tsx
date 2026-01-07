@@ -336,18 +336,15 @@ const ColorsManager = () => {
                 </div>
               </div>
 
-              {/* Galeria mais compacta */}
+              {/* Galeria em grid vertical */}
               <div className="space-y-1.5 pt-1.5">
-                <div className="flex items-center justify-between">
-                  <Label className="text-xs sm:text-sm font-semibold">Fotos nas Unhas</Label>
-                  <span className="text-[10px] text-muted-foreground">Deslize →</span>
-                </div>
+                <Label className="text-xs sm:text-sm font-semibold">Fotos nas Unhas</Label>
 
-                <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1 scrollbar-hide">
+                <div className="grid grid-cols-4 sm:grid-cols-5 gap-2">
                   {/* Main Nail Photo */}
-                  <div className="flex-shrink-0 w-20 sm:w-28 relative group">
-                    <span className="absolute -top-1.5 left-1 z-10 bg-primary text-[8px] sm:text-[10px] text-white px-1.5 py-0.5 rounded-full font-bold">
-                      Principal
+                  <div className="relative group">
+                    <span className="absolute -top-1 left-0.5 z-10 bg-primary text-[7px] sm:text-[9px] text-white px-1 py-0.5 rounded-full font-bold">
+                      ★
                     </span>
                     {formData.nails_image_url ? (
                       <div className="relative">
@@ -379,18 +376,18 @@ const ColorsManager = () => {
                         </div>
                       </div>
                     ) : (
-                      <div className="w-full aspect-square bg-muted rounded-lg border-2 border-dashed border-primary/30 flex flex-col items-center justify-center">
-                        <div className="flex gap-1">
-                          <label className="cursor-pointer p-1.5 bg-primary/10 rounded-full text-primary">
+                      <div className="w-full aspect-square bg-muted rounded-lg border-2 border-dashed border-primary/30 flex items-center justify-center">
+                        <div className="flex gap-0.5">
+                          <label className="cursor-pointer p-1 bg-primary/10 rounded-full text-primary">
                             <input
                               type="file"
                               accept="image/*"
                               onChange={(e) => handleImageUpload(e, 'nails')}
                               className="hidden"
                             />
-                            <Upload className="h-3 w-3" />
+                            <Upload className="h-2.5 w-2.5" />
                           </label>
-                          <label className="cursor-pointer p-1.5 bg-primary/10 rounded-full text-primary">
+                          <label className="cursor-pointer p-1 bg-primary/10 rounded-full text-primary">
                             <input
                               type="file"
                               accept="image/*"
@@ -398,7 +395,7 @@ const ColorsManager = () => {
                               onChange={(e) => handleImageUpload(e, 'nails')}
                               className="hidden"
                             />
-                            <Camera className="h-3 w-3" />
+                            <Camera className="h-2.5 w-2.5" />
                           </label>
                         </div>
                       </div>
@@ -407,7 +404,7 @@ const ColorsManager = () => {
 
                   {/* Gallery Photos */}
                   {galleryImages?.map((img) => (
-                    <div key={img.id} className="flex-shrink-0 w-20 sm:w-28 relative group">
+                    <div key={img.id} className="relative group">
                       <img
                         src={img.image_url}
                         alt="Galeria"
@@ -418,42 +415,40 @@ const ColorsManager = () => {
                         onClick={() => handleDeleteGalleryImage(img.id, img.image_url)}
                         className="absolute -top-1 -right-1 p-0.5 bg-destructive text-destructive-foreground rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
                       >
-                        <X className="h-3 w-3" />
+                        <X className="h-2.5 w-2.5" />
                       </button>
                     </div>
                   ))}
 
                   {/* Add Gallery Photos */}
                   {editingColor && (
-                    <div className="flex-shrink-0 w-20 sm:w-28">
-                      <div className="w-full aspect-square bg-muted rounded-lg border-2 border-dashed flex flex-col items-center justify-center">
-                        {uploadingGallery ? (
-                          <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                        ) : (
-                          <div className="flex gap-1">
-                            <label className="cursor-pointer p-1.5 bg-muted-foreground/10 rounded-full text-muted-foreground">
-                              <input
-                                type="file"
-                                accept="image/*"
-                                multiple
-                                onChange={handleGalleryImageUpload}
-                                className="hidden"
-                              />
-                              <Upload className="h-3 w-3" />
-                            </label>
-                            <label className="cursor-pointer p-1.5 bg-muted-foreground/10 rounded-full text-muted-foreground">
-                              <input
-                                type="file"
-                                accept="image/*"
-                                capture="environment"
-                                onChange={handleGalleryImageUpload}
-                                className="hidden"
-                              />
-                              <Camera className="h-3 w-3" />
-                            </label>
-                          </div>
-                        )}
-                      </div>
+                    <div className="w-full aspect-square bg-muted rounded-lg border-2 border-dashed flex items-center justify-center">
+                      {uploadingGallery ? (
+                        <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                      ) : (
+                        <div className="flex gap-0.5">
+                          <label className="cursor-pointer p-1 bg-muted-foreground/10 rounded-full text-muted-foreground">
+                            <input
+                              type="file"
+                              accept="image/*"
+                              multiple
+                              onChange={handleGalleryImageUpload}
+                              className="hidden"
+                            />
+                            <Upload className="h-2.5 w-2.5" />
+                          </label>
+                          <label className="cursor-pointer p-1 bg-muted-foreground/10 rounded-full text-muted-foreground">
+                            <input
+                              type="file"
+                              accept="image/*"
+                              capture="environment"
+                              onChange={handleGalleryImageUpload}
+                              className="hidden"
+                            />
+                            <Camera className="h-2.5 w-2.5" />
+                          </label>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
